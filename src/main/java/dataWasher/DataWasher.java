@@ -32,8 +32,8 @@ public class DataWasher {
 		cb1.deleteCharAt(cb1.length()-1);
 //		System.out.println(times[0].length());
 //		System.out.println(times[1].length());
-		cb0.append(":00-");
-		cb1.append(":00-");
+		cb0.append(":00+");
+		cb1.append(":00+");
 		times[0] = cb0.toString();
 		times[1] = cb1.toString();
 		return times;

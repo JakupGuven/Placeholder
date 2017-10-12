@@ -1,6 +1,2 @@
-/calendarConnector/
-/client_secret.json
-/controller/
-/dataFetcher/
-/dataWasher/
 /database/
+/controller/

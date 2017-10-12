@@ -16,10 +16,10 @@ import java.sql.ResultSet;
 public class DatabaseConnector {
 	private static final String URL = "jdbc:sqlite:/home/jakup/eclipse-workspace/Placeholder/db/scheduales.DB";
 	
-	public static String getURL(String id) {
+	public static String getURL(int id) {
 		try(Connection conn = DriverManager.getConnection(URL)){
 			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT url FROM scheduales WHERE id IS '" + id + "'");
+			ResultSet rs = stmt.executeQuery("SELECT url FROM schedules WHERE id IS '" + id + "'");
 			return rs.getString("url");
 		} catch (SQLException e) {
 			System.out.println(e);
@@ -29,10 +29,10 @@ public class DatabaseConnector {
 		return null;
 	}
 	
-	public static void addScheduale(String id, String url) {
+	public static void addScheduale(String name, String url) {
 		try(Connection conn = DriverManager.getConnection(URL)){
 			Statement stmt = conn.createStatement();
-			stmt.executeUpdate("INSERT INTO scheduales (id, url) VALUES ('" + id + "', '" + url + "' )" );
+			stmt.executeUpdate("INSERT INTO schedules (name, url) VALUES ('" + name + "', '" + url + "' )" );
 		} catch (SQLException e) {
 			System.out.println(e);
 			e.printStackTrace();

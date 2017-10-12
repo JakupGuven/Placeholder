@@ -19,14 +19,16 @@ public class Controller {
 	WebScraper scraper = new WebScraper();
 	DataWasher washer = new DataWasher();
 	private ArrayList<String> list = new ArrayList<String>();
+	
+	
 	@RequestMapping(value ="/", method = RequestMethod.GET)
 	public String helloWorld() {
 		System.out.println("hejsan");
 		return "Hello World";
 	}
 	
-	@RequestMapping(value = "/scheduale/{id}", method = RequestMethod.PUT)
-	public void putScheduale(@PathVariable("id") String id) {
+	@RequestMapping(value = "/schedule/{id}", method = RequestMethod.PUT)
+	public void putScheduale(@PathVariable("id") int id) {
 		try {
 			String URL = DatabaseConnector.getURL("'" + id + "'");
 			ArrayList<Event> eventList = washer.makeEventList(scraper.getLessons(URL)); 
@@ -38,7 +40,7 @@ public class Controller {
 	}
 	
 	@RequestMapping(value = "/scheduale/{id}", method = RequestMethod.GET)
-	public ArrayList<Event> getListAsJSON(@PathVariable("id") String id) {
+	public ArrayList<Event> getListAsJSON(@PathVariable("id") int id) {
 		String URL = DatabaseConnector.getURL(id);
 		System.out.println("HEJ");
 		return washer.makeEventList(scraper.getLessons(URL));
