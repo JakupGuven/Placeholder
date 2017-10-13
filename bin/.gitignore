@@ -1,2 +1,4 @@
-/database/
 /controller/
+/dataFetcher/
+/dataWasher/
+/database/

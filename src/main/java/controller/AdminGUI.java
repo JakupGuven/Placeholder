@@ -9,6 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import database.DatabaseConnector;
+
 public class AdminGUI extends JFrame{
 	private JPanel mainPanel = new JPanel();
 	private JLabel nameLabel = new JLabel("Name");
@@ -39,7 +41,9 @@ public class AdminGUI extends JFrame{
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-				System.out.println("It's working");
+				DatabaseConnector.addScheduale(nameInput.getText(), urlInput.getText());
+				nameInput.setText("");
+				urlInput.setText("");
 			}
 		}
 
