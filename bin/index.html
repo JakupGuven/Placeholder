@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<html itemscope itemtype="http://schema.org/Article">
+<head>
+ <link rel="stylesheet" type="text/css" href="style.css">
+   <meta charset="utf-8"/>
+  <title>Placeholder</title>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
+    </script>
+ <script src="PageScript.js"></script>
+<script src="https://apis.google.com/js/client:platform.js?onload=start" async defer>
+</script>
+
+<script>
+    function start() {
+      gapi.load('auth2', function() {
+        auth2 = gapi.auth2.init({
+          client_id: ' 759261274828-r2ub65t4lujmq7iifo5q5fraa7c9imik.apps.googleusercontent.com',
+          // Scopes to request in addition to 'profile' and 'email'
+          scope: 'https://www.googleapis.com/auth/calendar'
+        });
+      });
+    }
+  </script>
+
+
+</head>
+<body>
+  <button id="signinButton">Sign in with Google</button>
+<script>
+  $('#signinButton').click(function() {
+    // signInCallback defined in step 6.
+    auth2.grantOfflineAccess().then(signInCallback);
+  });
+</script>
+
+  <div class="intro">
+    <p>Text som introducerar sidan och tjänstens funktion</p>
+  </div>
+  <div class="input">
+    <select id = "Program">
+      <option value="0">Välj ett program</option>
+    </select>
+    <br>
+    <br>
+    <button type="button" id="GC">Skicka till Google Calendar</button>
+    <button type="button" id="JSON">Hämta som JSON</button>
+  </div>
+  <div class="output">
+    <p id="outputText">Text som talar om för användaren vad som hänt</p>
+  </div>
+</body>
+</html>

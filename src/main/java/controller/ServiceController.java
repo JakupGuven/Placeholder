@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,24 +20,25 @@ import database.DatabaseConnector;
 //@CrossOrigin(origins = "*", maxAge = 3600)
 @EnableAutoConfiguration
 @RestController
-public class Controller {
+public class ServiceController {
 	WebScraper scraper = new WebScraper();
 	DataWasher washer = new DataWasher();
 	private ArrayList<String> list = new ArrayList<String>();
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String helloWorld() {
-		System.out.println("hejsan");
 		return "Hello World";
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = "/schedule/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/schedule/{id}", method = RequestMethod.GET)
 	public void putScheduale(@PathVariable("id") int id) {
 		try {
 			String URL = DatabaseConnector.getURL(id);
+			System.out.println("sent to method");
 			ArrayList<Event> eventList = washer.makeEventList(scraper.getLessons(URL));
 			CalendarConnector.insertEvents(eventList);
+			System.out.println("sent to GC");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -44,7 +46,7 @@ public class Controller {
 	}
 	
 	@CrossOrigin
-	@RequestMapping(value = "/schedule/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/schedule/{id}", method = RequestMethod.POST)
 	public ArrayList<Event> getListAsJSON(@PathVariable("id") int id) {
 		String URL = DatabaseConnector.getURL(id);
 		System.out.println("HEJ");

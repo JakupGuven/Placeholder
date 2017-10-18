@@ -14,7 +14,7 @@ import java.sql.ResultSet;
  *
  */
 public class DatabaseConnector {
-	private static String URL = "jdbc:sqlite:/home/jakup/git/Placeholder/db/scheduales.DB";
+	private static String URL = "jdbc:sqlite:/home/jakup/eclipse-workspace/Placeholder/db/scheduales.DB";
 	
 	public static void setDBLocation(String location) {
 		URL = "jdbc:sqlite:" + location;

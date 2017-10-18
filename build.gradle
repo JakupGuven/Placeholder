@@ -14,10 +14,12 @@ repositories {
     // Use jcenter for resolving your dependencies.
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
+    
 }
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web:1.5.7.RELEASE")
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '1.5.7.RELEASE'
     compile 'com.google.guava:guava:22.0'
     compile 'org.jsoup:jsoup:1.10.3'
     compile 'com.google.api-client:google-api-client:1.22.0'
