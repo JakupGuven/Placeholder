@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.api.services.calendar.model.Event;
 
 import calendarConnector.CalendarConnector;
+import dataFetcher.LessonList;
 import dataFetcher.WebScraper;
 import dataWasher.DataWasher;
 import database.DatabaseConnector;
@@ -30,26 +31,32 @@ public class ServiceController {
 		return "Hello World";
 	}
 
-	@CrossOrigin
-	@RequestMapping(value = "/schedule/{id}", method = RequestMethod.GET)
-	public void putScheduale(@PathVariable("id") int id) {
-		try {
-			String URL = DatabaseConnector.getURL(id);
-			System.out.println("sent to method");
-			ArrayList<Event> eventList = washer.makeEventList(scraper.getLessons(URL));
-			CalendarConnector.insertEvents(eventList);
-			System.out.println("sent to GC");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+//	@CrossOrigin
+//	@RequestMapping(value = "/schedule/{id}", method = RequestMethod.POST)
+//	public void putScheduale(@PathVariable("id") int id) {
+//		try {
+//			String URL = DatabaseConnector.getURL(id);
+//			System.out.println("sent to method");
+//			ArrayList<Event> eventList = washer.makeEventList(scraper.getLessons(URL));
+//			CalendarConnector.insertEvents(eventList);
+//			System.out.println("sent to GC");
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 	
 	@CrossOrigin
-	@RequestMapping(value = "/schedule/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/schedule/{id}", method = RequestMethod.GET)
 	public ArrayList<Event> getListAsJSON(@PathVariable("id") int id) {
+		ArrayList<Event> eventList = null;
+		LessonList lessonList = null;
 		String URL = DatabaseConnector.getURL(id);
-		System.out.println("HEJ");
+		lessonList = scraper.getLessons(URL);
+		eventList = washer.makeEventList(lessonList);
+		System.out.println(lessonList.size() + " scraper");
+		System.out.println(eventList.size() + " datawasher");
+//		System.out.println(id);
 		return washer.makeEventList(scraper.getLessons(URL));
 
 	}

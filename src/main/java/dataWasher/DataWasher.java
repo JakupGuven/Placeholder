@@ -20,7 +20,7 @@ import dataFetcher.WebScraper;
  */
 public class DataWasher {
 	Calendar calendar = new GregorianCalendar();
-	private ArrayList<Event> list = new ArrayList<Event>();
+	private ArrayList<Event> list;
 	private int lastMonth;
 	private int currentYear = calendar.get(Calendar.YEAR);
 
@@ -97,6 +97,7 @@ public class DataWasher {
 	}
 
 	public ArrayList<Event> makeEventList(LessonList lessons) {
+		list = new ArrayList<Event>();
 		for (int i = 0; i < lessons.size(); i++) {
 			String[] times = formatTime(lessons.get(i).getTime());
 			String startTime = times[0];
@@ -123,18 +124,18 @@ public class DataWasher {
 		return list;
 	}
 	
-	public static void main(String[] args) {
-		WebScraper scraper = new WebScraper();
-		DataWasher maker = new DataWasher();
-		ArrayList<Event> list = maker.makeEventList(scraper.getLessons("http://schema.mah.se/setup/jsp/Schema.jsp?startDatum=idag&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=p.TGSYA15h"));
-		for(int i = 0; i < list.size(); i++) {
-			try {
-				System.out.println(list.get(i).toPrettyString());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
+//	public static void main(String[] args) {
+//		WebScraper scraper = new WebScraper();
+//		DataWasher maker = new DataWasher();
+//		ArrayList<Event> list = maker.makeEventList(scraper.getLessons("http://schema.mah.se/setup/jsp/Schema.jsp?startDatum=idag&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=p.TGSYA15h"));
+//		for(int i = 0; i < list.size(); i++) {
+//			try {
+//				System.out.println(list.get(i).toPrettyString());
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//	}
 
 }

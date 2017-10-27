@@ -17,7 +17,7 @@ import org.jsoup.nodes.Element;
 public class WebScraper {
 	public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36";
 	private Elements whiteList, greyList, firstList, secondList;
-	private LessonList lessonList = new LessonList();
+	private LessonList lessonList;
 	private int largestSize;
 	
 	private void setLargestSize() {
@@ -40,6 +40,7 @@ public class WebScraper {
 
 	public LessonList getLessons(String inUrl) {
 		try {
+			lessonList = new LessonList();
 			final Document HTML_DOCUMENT = Jsoup.connect(inUrl).userAgent(USER_AGENT).get();
 			Elements list = HTML_DOCUMENT.select(".schemaTabell");
 			whiteList = list.select(".data-white");
@@ -84,14 +85,14 @@ public class WebScraper {
 	}
 
 
-	public static void main(String[] args) {
-		WebScraper web = new WebScraper();
-		LessonList list = web.getLessons("http://schema.mah.se/setup/jsp/Schema.jsp?startDatum=idag&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=p.TGSYA15h");
-		for( int i = 0; i < list.size(); i++) {
-			System.out.println(list.get(i).toString());
-		}
-		
-	
-	}
+//	public static void main(String[] args) {
+//		WebScraper web = new WebScraper();
+//		LessonList list = web.getLessons("http://schema.mah.se/setup/jsp/Schema.jsp?startDatum=idag&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=p.TGSYA15h");
+//		for( int i = 0; i < list.size(); i++) {
+//			System.out.println(list.get(i).toString());
+//		}
+//		
+//	
+//	}
 
 }
