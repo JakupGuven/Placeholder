@@ -1,41 +1,19 @@
 <!DOCTYPE html>
 <html>
-<html itemscope itemtype="http://schema.org/Article">
 <head>
  <link rel="stylesheet" type="text/css" href="style.css">
    <meta charset="utf-8"/>
   <title>Placeholder</title>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
-    </script>
- <script src="PageScript.js"></script>
-<script src="https://apis.google.com/js/client:platform.js?onload=start" async defer>
-</script>
-
-<script>
-    function start() {
-      gapi.load('auth2', function() {
-        auth2 = gapi.auth2.init({
-          client_id: ' 759261274828-r2ub65t4lujmq7iifo5q5fraa7c9imik.apps.googleusercontent.com',
-          // Scopes to request in addition to 'profile' and 'email'
-          scope: 'https://www.googleapis.com/auth/calendar'
-        });
-      });
-    }
+  <script async defer src="https://apis.google.com/js/api.js"
+    onload="this.onload=function(){};handleClientLoad()"
+    onreadystatechange="if (this.readyState === 'complete') this.onload()">
   </script>
-
-
+  <script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+ <script src="PageScript.js"></script>
 </head>
 <body>
-  <button id="signinButton">Sign in with Google</button>
-<script>
-  $('#signinButton').click(function() {
-    // signInCallback defined in step 6.
-    auth2.grantOfflineAccess().then(signInCallback);
-  });
-</script>
-
   <div class="intro">
-    <p>Text som introducerar sidan och tjänstens funktion</p>
+    <p>Välkommen till Placeholder, en webbtjänst implementerad för att enkelt migrera ditt Kronoxschema till Google Calendar.</p>
   </div>
   <div class="input">
     <select id = "Program">
@@ -44,10 +22,136 @@
     <br>
     <br>
     <button type="button" id="GC">Skicka till Google Calendar</button>
-    <button type="button" id="JSON">Hämta som JSON</button>
   </div>
   <div class="output">
-    <p id="outputText">Text som talar om för användaren vad som hänt</p>
+    <pre id="outputText"></pre>
   </div>
+
+   <!--<button id="signout-button" style="display: none;">Sign Out</button> -->
+
+
+   <script type="text/javascript">
+     // Client ID and API key from the Developer Console
+     var CLIENT_ID = '759261274828-r2ub65t4lujmq7iifo5q5fraa7c9imik.apps.googleusercontent.com';
+
+     // Array of API discovery doc URLs for APIs used by the quickstart
+     var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
+
+     // Authorization scopes required by the API; multiple scopes can be
+     // included, separated by spaces.
+     var SCOPES = "https://www.googleapis.com/auth/calendar";
+
+     var authorizeButton = document.getElementById('GC');
+  //   var signoutButton = document.getElementById('signout-button');
+
+     /**
+      *  On load, called to load the auth2 library and API client library.
+      */
+     function handleClientLoad() {
+       gapi.load('client:auth2', initClient);
+     }
+
+     /**
+      *  Initializes the API client library and sets up sign-in state
+      *  listeners.
+      */
+     function initClient() {
+       gapi.client.init({
+         discoveryDocs: DISCOVERY_DOCS,
+         clientId: CLIENT_ID,
+         scope: SCOPES
+       }).then(function () {
+         // Listen for sign-in state changes.
+         gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+
+         // Handle the initial sign-in state.
+        // authorizeButton.onclick = handleAuthClick;
+         //signoutButton.onclick = handleSignoutClick;
+       });
+     }
+
+     /**
+      *  Called when the signed in status changes, to update the UI
+      *  appropriately. After a sign-in, the API is called.
+      */
+     function updateSigninStatus(isSignedIn, data) {
+       if (isSignedIn) {
+         postEvents(data);
+       }
+     }
+
+     /**
+      *  Sign in the user upon button click.
+      */
+     function handleAuthClick(data) {
+       gapi.auth2.getAuthInstance().signIn();
+       updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get(), data);
+     }
+
+     /**
+      *  Sign out the user upon button click.
+      */
+  //   function handleSignoutClick(event) {
+    //   gapi.auth2.getAuthInstance().signOut();
+     //}
+
+     /**
+      * Append a pre element to the body containing the given message
+      * as its text node. Used to display the results of the API call.
+      *
+      * @param {string} message Text to be placed in pre element.
+      */
+     function appendPre(message) {
+       $("#outputText").text(message)
+
+     }
+
+     /**
+      * Print the summary and start datetime/date of the next ten events in
+      * the authorized user's calendar. If no events are found an
+      * appropriate message is printed.
+      */
+      function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+
+     async function postEvents(data) {
+       appendPre("Skickar till Google Calendar...");
+       for(var i = 0; i < data.length; i++){
+         var eventData = data[i].split("*");
+       var event = {
+         'summary': eventData[4],
+         'location': eventData[3],
+         'description': eventData[2],
+         'start': {
+           'dateTime': eventData[0],
+           //'timeZone': 'America/Los_Angeles'
+         },
+         'end': {
+           'dateTime': eventData[1],
+           //'timeZone': 'America/Los_Angeles'
+         },
+         'reminders': {
+           'useDefault': false,
+           'overrides': [
+             {'method': 'email', 'minutes': 24 * 60},
+             {'method': 'popup', 'minutes': 10}
+           ]
+         }
+       };
+
+       var request = gapi.client.calendar.events.insert({
+         'calendarId': 'primary',
+         'resource': event
+       });
+
+       request.execute(function(event) {
+       });
+       await sleep(350);
+      }
+        appendPre("Färdig!");
+     }
+
+   </script>
 </body>
 </html>

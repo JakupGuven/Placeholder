@@ -1,4 +1,5 @@
 package dataFetcher;
+
 import java.util.ArrayList;
 
 public class LessonList {
@@ -13,11 +14,11 @@ public class LessonList {
 		}
 		list.add(inLesson);
 	}
-	
+
 	public Lesson get(int index) {
 		return list.get(index);
 	}
-	
+
 	public int size() {
 		return list.size();
 	}

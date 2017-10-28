@@ -8,14 +8,13 @@ import java.util.ArrayList;
 import java.sql.ResultSet;
 
 /**
- * Writes and reads user test data to Controller.
  * 
  * @author Jakup
  *
  */
 public class DatabaseConnector {
 	private static String URL = "jdbc:sqlite:/home/jakup/eclipse-workspace/Placeholder/db/scheduales.DB";
-	
+
 	public static void setDBLocation(String location) {
 		URL = "jdbc:sqlite:" + location;
 	}
@@ -54,7 +53,6 @@ public class DatabaseConnector {
 			int i = 0;
 			while (rs.next()) {
 				programArray[i] = rs.getString("name");
-				System.out.println(programArray[i]);
 				i++;
 			}
 			return programArray;
@@ -69,9 +67,27 @@ public class DatabaseConnector {
 	/**
 	 * @param args
 	 *            the command line arguments
+	 * @throws SQLException
 	 */
 	public static void main(String[] args) {
-		getAllProgramNames();
+		getProgramList();
+	}
+
+	public static ArrayList<String> getProgramList() {
+		try (Connection conn = DriverManager.getConnection(URL)) {
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("Select id, name from schedules");
+			ArrayList<String> programList = new ArrayList<String>();
+			while (rs.next()) {
+				String data = rs.getInt(1) + " " + rs.getString(2);
+				programList.add(data);
+			}
+			return programList;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }
