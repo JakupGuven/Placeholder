@@ -85,7 +85,7 @@ public class DataWasher {
 		String year = "" + currentYear;
 
 		cb = new StringBuilder(year);
-		cb.append("-" + dateArray[1] + "-" + dateArray[0] + "/");
+		cb.append("-" + dateArray[1] + "-" + dateArray[0] + "T");
 		lastMonth = Integer.parseInt(dateArray[1]);
 		return cb.toString();
 	}
