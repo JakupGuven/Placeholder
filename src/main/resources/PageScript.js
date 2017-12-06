@@ -1,3 +1,4 @@
+try {
 $().ready(function(){
   fillList();
   $("#GC").click(function(){
@@ -152,3 +153,9 @@ async function postEvents(data) {
  }
    appendPre("Färdig!");
 }
+
+}
+catch(err) {
+    console.log(err);
+}
+
